@@ -1,0 +1,17 @@
+source:
+  adapter: sqlite3
+  database: /home/jmmy/work/omei/omei.sqlite
+  pool: 5
+  timeout: 5000
+
+target:
+  adapter: mysql
+  database: travel
+  encoding: utf8
+  timeout: 5000
+  username: travel
+  password: travel
+  host: localhost
+
+
+
