@@ -1,8 +1,10 @@
 source:
-  adapter: sqlite3
-  database: /home/jimmy/work/omei/omei.sqlite
-  pool: 5
-  timeout: 5000
+  adapter: sqlserver
+  dsn: OmeiOdbc
+  host: localhost\\sqlexpress
+  database: travel
+  username: travel
+  password: travel
 
 target:
   adapter: mysql

@@ -24,21 +24,21 @@ def mig_dest
 		end
 		dest = Destination.new
 		dest.id = d.id
-		dest.title = d.DestinationName
-		dest.title_cn = d.DestinationName_cn
+		dest.title = gbk_utf8 d.DestinationName
+		dest.title_cn = gbk_utf8 d.DestinationName_cn
 		dest.city = d.city
 		dest.state = d.state
 		dest.country = d.country
 		dest.status = d.Status
 
 		dest.description = Description.new
-		dest.description.en = d.Description
-		dest.description.cn = d.Description_cn
+		dest.description.en = gbk_utf8 d.Description
+		dest.description.cn = gbk_utf8 d.Description_cn
 
 		dest.save!
 
 		cnt += 1
-		print "\r" << percent(cnt,tot) 
+		print "\r" << percent(cnt,tot) << dest.id.to_s # << " : " << dest.title_cn 
 		STDOUT.flush
 	end
 	puts ""

@@ -15,6 +15,10 @@ def percent(i, tot)
 	"#{i*100/tot}% (#{i}/#{tot})"
 end
 
+def gbk_utf8(str)
+  str ? Iconv.iconv("UTF-8//IGNORE", "gb18030//IGNORE", str).join("") : str;
+end
+
 if ARGV.length == 0
 	puts "Usage: #{$0} [-options]"
 	puts"\t-all\t\t Do All!"

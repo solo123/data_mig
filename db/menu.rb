@@ -28,7 +28,7 @@ def mig_menu
 		mn.need_confirm = m.needConfirm
 		mn.confirm_message = m.confirmMessage
 		mn.menu_type = m.menuType
-		mn.app_type = m.appType
+		mn.app_type = ''
 		mn.status = m.status
 
 		mn.save!
