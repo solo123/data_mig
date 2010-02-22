@@ -10,6 +10,7 @@ end
 def mig_tour
 	puts " tours ==> tours"
 	Tour.delete_all
+	Description.delete_all("ref_type='Tour'")
 	src = SrcTours.all
 	tot = src.length
 	cnt = 0
@@ -33,7 +34,8 @@ def mig_tour
 		t.description.cn = s.Description_cn
 		t.save!
 
-		print "\r" << percent(++cnt, tot) << cnt.to_s
+		cnt += 1
+		print "\r" << percent(cnt, tot)
 		STDOUT.flush
 	end
 	puts ""

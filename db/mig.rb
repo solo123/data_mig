@@ -12,7 +12,7 @@ tour:Tours      :tours
 para
 
 def percent(i, tot)
-	(i*100/tot).to_s + '%'
+	"#{i*100/tot}% (#{i}/#{tot})"
 end
 
 if ARGV.length == 0

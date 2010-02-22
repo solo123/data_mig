@@ -8,7 +8,10 @@ end
 def mig_menu
 	puts " AdminMenu ==> menus"
 	Menu.delete_all
-	SrcAdminMenu.all.each do |m|
+	src = SrcAdminMenu.all
+	tot = src.length
+	cnt = 0
+	src.each do |m|
 		if $interrupted 
 			exit
 		end
@@ -29,9 +32,8 @@ def mig_menu
 		mn.status = m.status
 
 		mn.save!
-		print "\n"
-		print "                                                                     "
-		print m.id.to_s + ":" + mn.title
+		cnt += 1
+		print "\r" << percent(cnt, tot)
 		$stdout.flush
 	end
 	puts ""

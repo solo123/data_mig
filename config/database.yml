@@ -1,6 +1,6 @@
 source:
   adapter: sqlite3
-  database: /home/jmmy/work/omei/omei.sqlite
+  database: /home/jimmy/work/omei/omei.sqlite
   pool: 5
   timeout: 5000
 

@@ -14,7 +14,11 @@ end
 def mig_dest
 	puts " Destination ==> destinations"
 	Destination.delete_all
-	SrcDestinations.all.each do |d|
+	Description.delete_all("ref_type='Destination'")
+	src = SrcDestinations.all
+	tot = src.length
+	cnt = 0
+	src.each do |d|
 		if $interruped
 			exit
 		end
@@ -33,7 +37,8 @@ def mig_dest
 
 		dest.save!
 
-		print "\r" << dest.id.to_s << ":" << dest.title << "                            " 
+		cnt += 1
+		print "\r" << percent(cnt,tot) 
 		STDOUT.flush
 	end
 	puts ""
