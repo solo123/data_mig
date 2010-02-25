@@ -17,8 +17,8 @@ def mig_tour
 	src.each do |s|
 		t = Tour.new
 		t.id = s.id
-		t.name = s.TourName
-		t.name_cn = s.TourName_cn
+		t.name = gbk_utf8 s.TourName
+		t.name_cn = gbk_utf8 s.TourName_cn
 		t.show_order = s.tourOrder
 		t.days = s.TourDay
 		t.tour_type = s.TourType
@@ -30,8 +30,8 @@ def mig_tour
 		t.is_float_price = s.isFloatPrice
 
 		t.description = Description.new
-		t.description.en = s.Description
-		t.description.cn = s.Description_cn
+		t.description.en = gbk_utf8 s.Description
+		t.description.cn = gbk_utf8 s.Description_cn
 		t.save!
 
 		cnt += 1
