@@ -3,12 +3,14 @@ require 'destinations'
 require 'menu'
 require 'tours'
 require 'photos'
+require 'biz_type'
 
 paras = <<para
 dest:Destination:destinations,descriptions
 menu:AdminMenu  :menus
 photos:Photos   :dest_photos
-tour:Tours      :tours
+tour:Tours      :tours,descriptions
+type:RefType    :biz_types
 para
 
 def percent(i, tot)

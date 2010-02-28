@@ -28,6 +28,7 @@ def mig_tour
 		t.price_child = s.priceChild * 100
 		t.has_seat_table = s.hasSeatTable
 		t.is_float_price = s.isFloatPrice
+        t.status = s.status
 
 		t.description = Description.new
 		t.description.en = gbk_utf8 s.Description
