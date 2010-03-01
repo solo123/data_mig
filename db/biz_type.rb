@@ -18,7 +18,7 @@ def mig_type
         t.ref_type = s.listClass
         t.ref_id = s.listValue
         t.title = s.listTitle
-        t.title_cn = s.listTitle_cn
+        t.title_cn =  gbk_utf8 s.listTitle_cn
         t.style = s.listStyle
         t.status = s.status
 		t.save!
