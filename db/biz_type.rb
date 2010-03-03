@@ -7,7 +7,6 @@ class Biz_type < TargetDB
 end
 
 def mig_type
-	puts " TypeRef ==> biz_type"
 	Biz_type.delete_all
 	src = SrcTypes.all
 	tot = src.length
@@ -27,5 +26,4 @@ def mig_type
 		print "\r" << percent(cnt, tot)
 		STDOUT.flush
 	end
-	puts ""
 end

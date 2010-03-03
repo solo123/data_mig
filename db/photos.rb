@@ -5,7 +5,6 @@ end
 class Photo < TargetDB
 end
 def mig_photos
-	puts " Photos ==> photos"
 	Photo.delete_all
 	src = SrcPhotos.all
 	tot = src.length
@@ -27,5 +26,4 @@ def mig_photos
 		print "\r" << percent(cnt,tot)
 		STDOUT.flush
 	end
-	puts ""
 end

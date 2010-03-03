@@ -8,7 +8,6 @@ class Tour < TargetDB
 end
 
 def mig_tour
-	puts " tours ==> tours"
 	Tour.delete_all
 	Description.delete_all("ref_type='Tour'")
 	src = SrcTours.all
@@ -17,8 +16,8 @@ def mig_tour
 	src.each do |s|
 		t = Tour.new
 		t.id = s.id
-		t.name = gbk_utf8 s.TourName
-		t.name_cn = gbk_utf8 s.TourName_cn
+		t.title = gbk_utf8 s.TourName
+		t.title_cn = gbk_utf8 s.TourName_cn
 		t.show_order = s.tourOrder
 		t.days = s.TourDay
 		t.tour_type = s.TourType
@@ -39,5 +38,4 @@ def mig_tour
 		print "\r" << percent(cnt, tot)
 		STDOUT.flush
 	end
-	puts ""
 end

@@ -4,6 +4,8 @@ require 'menu'
 require 'tours'
 require 'photos'
 require 'biz_type'
+require 'itineraries'
+require 'schedules'
 
 paras = <<para
 dest:Destination:destinations,descriptions
@@ -11,6 +13,8 @@ menu:AdminMenu  :menus
 photos:Photos   :dest_photos
 tour:Tours      :tours,descriptions
 type:RefType    :biz_types
+tourd:tourDestinations:itinerary,descriptions
+schedule:BusSchedule:schedules
 para
 
 def percent(i, tot)
@@ -34,7 +38,9 @@ ARGV.each do |arg|
 	paras.split("\n").each do |ps|
 		p = ps.split(":")	
 		if ( arg == '-all' || Regexp.new('^' + arg.slice(1,10)).match(p[0]))
+            puts p[1] << " ==> " << p[2]
 			eval 'mig_' + p[0]
+            puts ""
 		end
 	end
 end

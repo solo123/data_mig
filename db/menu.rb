@@ -6,7 +6,6 @@ class Menu < TargetDB
 end
 
 def mig_menu
-	puts " AdminMenu ==> menus"
 	Menu.delete_all
 	src = SrcAdminMenu.all
 	tot = src.length
@@ -36,5 +35,4 @@ def mig_menu
 		print "\r" << percent(cnt, tot)
 		$stdout.flush
 	end
-	puts ""
 end

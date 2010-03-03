@@ -12,7 +12,6 @@ class Description < TargetDB
 	belongs_to :ref, :polymorphic => :true
 end
 def mig_dest
-	puts " Destination ==> destinations"
 	Destination.delete_all
 	Description.delete_all("ref_type='Destination'")
 	src = SrcDestinations.all
@@ -41,5 +40,4 @@ def mig_dest
 		print "\r" << percent(cnt,tot) << dest.id.to_s # << " : " << dest.title_cn 
 		STDOUT.flush
 	end
-	puts ""
 end
