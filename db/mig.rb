@@ -6,6 +6,7 @@ require 'photos'
 require 'biz_type'
 require 'itineraries'
 require 'schedules'
+require 'orders'
 
 paras = <<para
 dest:Destination:destinations,descriptions
@@ -15,6 +16,7 @@ tour:Tours      :tours,descriptions
 type:RefType    :biz_types
 tourd:tourDestinations:itinerary,descriptions
 schedule:BusSchedule:schedules
+order:Orders:orders
 para
 
 def percent(i, tot)
