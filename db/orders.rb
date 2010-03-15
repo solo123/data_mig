@@ -36,6 +36,8 @@ def mig_order
         t.order_date = s.orderDate
         t.member_id = s.memberId
         t.contact_id = 0
+        t.tourists = s.customers
+        #TODO: t.seats = ...
         t.agent_from = s.agentTransfor
         t.agent_to = s.toAgent
         t.order_type = s.isWebOrder ? 1 : 0

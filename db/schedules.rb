@@ -17,8 +17,8 @@ def mig_schedule
 		t.id = s.id
         t.title = s.subTitle
         t.tour_id = s.tourId
-        t.start_date = s.startDate
-        t.end_date = s.endDate
+        t.depart_date = s.startDate
+        t.return_date = s.endDate
         t.vehicle_id = s.vehicleId
         t.max_seats = s.maxSeats
         t.driver_id = s.driverId

@@ -7,6 +7,11 @@ require 'biz_type'
 require 'itineraries'
 require 'schedules'
 require 'orders'
+require 'users'
+require 'employees'
+require 'companies'
+require 'notices'
+require 'bookmarks'
 
 paras = <<para
 dest:Destination:destinations,descriptions
@@ -17,6 +22,11 @@ type:RefType    :biz_types
 tourd:tourDestinations:itinerary,descriptions
 schedule:BusSchedule:schedules
 order:Orders:orders
+user:userInfo:userinfos,members
+employee:employeeInfo:employees
+company:Company:companies
+notice:WhatsNew:notices
+bookmark:Bookmark:bookmarks
 para
 
 def percent(i, tot)
