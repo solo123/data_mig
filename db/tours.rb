@@ -16,8 +16,8 @@ def mig_tour
 	src.each do |s|
 		t = Tour.new
 		t.id = s.id
-		t.title = gbk_utf8 s.TourName
-		t.title_cn = gbk_utf8 s.TourName_cn
+		t.name = gbk_utf8 s.TourName
+		t.name_cn = gbk_utf8 s.TourName_cn
 		t.show_order = s.tourOrder
 		t.days = s.TourDay
 		t.tour_type = s.TourType

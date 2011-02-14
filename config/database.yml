@@ -1,18 +1,16 @@
 source:
   adapter: sqlserver
-  dsn: OmeiOdbc
-  host: localhost\\sqlexpress
-  database: travel
-  username: travel
-  password: travel
+  dsn: sqlexpress
+  mode: odbc
+  database: omei
 
 target:
-  adapter: mysql
-  database: travel
+  adapter: mysql2
+  database: t-web
   encoding: utf8
   timeout: 5000
-  username: travel
-  password: travel
+  username: root
+  password: 
   host: localhost
 
 

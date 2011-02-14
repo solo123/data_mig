@@ -1,17 +1,17 @@
 require '../public/db_connect'
-require 'destinations'
-require 'menu'
-require 'tours'
-require 'photos'
-require 'biz_type'
-require 'itineraries'
-require 'schedules'
-require 'orders'
-require 'users'
-require 'employees'
-require 'companies'
-require 'notices'
-require 'bookmarks'
+require './destinations'
+require './menu'
+require './tours'
+require './photos'
+require './biz_type'
+require './tour_points'
+require './schedules'
+require './orders'
+require './users'
+require './employees'
+require './companies'
+require './notices'
+require './bookmarks'
 
 paras = <<para
 dest:Destination:destinations,descriptions
@@ -19,7 +19,7 @@ menu:AdminMenu  :menus
 photos:Photos   :dest_photos
 tour:Tours      :tours,descriptions
 type:RefType    :biz_types
-tourd:tourDestinations:itinerary,descriptions
+tourd:TourPoints:tour_points,descriptions
 schedule:BusSchedule:schedules
 order:Orders:orders
 user:userInfo:userinfos,members

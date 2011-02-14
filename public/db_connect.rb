@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'yaml'
+require 'mysql2'
 require 'active_record'
  
 class SourceDB < ActiveRecord::Base

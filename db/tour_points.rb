@@ -3,23 +3,23 @@ class SrcTourDests < SourceDB
 	self.primary_key = "tourDestid"
 end
 
-class Itinerary < TargetDB
+class TourPoint < TargetDB
 	has_one :description, :as => :ref
 end
 
 def mig_tourd
-	Itinerary.delete_all
-	Description.delete_all("ref_type='Itinerary'")
+	TourPoint.delete_all
+	Description.delete_all("ref_type='TourPoint'")
 	src = SrcTourDests.all
 	tot = src.length
 	cnt = 0
 	src.each do |s|
-		t = Itinerary.new
+		t = TourPoint.new
 		t.id = s.id
         t.tour_id = s.tourId
         t.destination_id = s.destinationId
         t.visit_day = s.visitDate
-        t.position = s.visitOrder
+        t.visit_order = s.visitOrder
 
         t.description = Description.new
         t.description.en = gbk_utf8 s.description

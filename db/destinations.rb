@@ -25,15 +25,15 @@ def mig_dest
 		dest.id = d.id
 		dest.title = gbk_utf8 d.DestinationName
 		dest.title_cn = gbk_utf8 d.DestinationName_cn
-		dest.city = d.city
-		dest.state = d.state
+		dest.city = gbk_utf8 d.city
+		dest.state = gbk_utf8 d.state
 		dest.country = d.country
 		dest.status = d.Status
 
 		dest.description = Description.new
 		dest.description.en = gbk_utf8 d.Description
 		dest.description.cn = gbk_utf8 d.Description_cn
-
+		
 		dest.save!
 
 		cnt += 1
