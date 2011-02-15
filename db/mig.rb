@@ -12,6 +12,7 @@ require './employees'
 require './companies'
 require './notices'
 require './bookmarks'
+require './products'
 
 paras = <<para
 dest:Destination:destinations,descriptions
@@ -27,6 +28,7 @@ employee:employeeInfo:employees
 company:Company:companies
 notice:WhatsNew:notices
 bookmark:Bookmark:bookmarks
+product:Products:products
 para
 
 def percent(i, tot)
