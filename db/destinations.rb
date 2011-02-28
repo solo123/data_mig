@@ -23,6 +23,7 @@ def mig_dest
 		end
 		dest = Destination.new
 		dest.id = d.id
+		dest.title_pic = d.titlePic
 		dest.title = gbk_utf8 d.DestinationName
 		dest.title_cn = gbk_utf8 d.DestinationName_cn
 		dest.city = gbk_utf8 d.city
