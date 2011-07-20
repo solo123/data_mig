@@ -5,13 +5,8 @@ source:
   database: omei
 
 target:
-  adapter: mysql2
-  database: t-web
-  encoding: utf8
+  adapter: sqlite3
+  database: data/dev.sqlite3
   timeout: 5000
-  username: root
-  password: 
-  host: localhost
-
 
 

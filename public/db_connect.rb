@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'yaml'
-require 'mysql2'
+require 'sqlite3'
 require 'active_record'
  
 class SourceDB < ActiveRecord::Base
@@ -15,7 +15,13 @@ class TargetDB < ActiveRecord::Base
   establish_connection(config)
 end
 
+def percent(i, tot)
+  "#{i*100/tot}% (#{i}/#{tot})"
+end
 
+def gbk_utf8(str)
+  str ? Iconv.iconv("UTF-8//IGNORE", "gb18030//IGNORE", str).join("") : str;
+end
 
 
 
