@@ -4,14 +4,14 @@ class SrcDestinations < SourceDB
 	set_table_name "Destination"
 	self.primary_key = "DestinationID"
 end
-class Destination < TargetDB
+class Destination < InfosDB
 	has_one :description, :as => :ref
 end
-class Location < TargetDB
+class Location < InfosDB
   has_many :locs, :class_name => 'Location', :foreign_key => 'parent_id'
   belongs_to :parent, :class_name => 'Location'
 end
-class Description < TargetDB
+class Description < InfosDB
 	belongs_to :ref, :polymorphic => :true
 end
 def do_migrate
@@ -21,8 +21,8 @@ def do_migrate
   loc_root = Location.where(:parent_id => nil, :title => 'locations').first
   if !loc_root
     loc_root = Location.new
-    loc.title = 'locations'
-    loc.save!
+    loc_root.title = 'locations'
+    loc_root.save!
   end
     
 	src = SrcDestinations.all
@@ -33,25 +33,22 @@ def do_migrate
 			exit
 		end
 		dest = Destination.new
+		dest.build_description
+		
 		dest.id = d.id
-		dest.title_pic = d.titlePic
-		dest.title = gbk_utf8 d.DestinationName
-		dest.title_cn = gbk_utf8 d.DestinationName_cn
-		dest.city = gbk_utf8 d.city
-		dest.state = gbk_utf8 d.state
-		dest.country = d.country
+		dest.title = d.DestinationName
+		dest.title_cn = d.DestinationName_cn
 		dest.status = d.Status
 
-		dest.description = Description.new
-		dest.description.en = gbk_utf8 d.Description
-		dest.description.cn = gbk_utf8 d.Description_cn
+		dest.description.en = d.Description
+		dest.description.cn = d.Description_cn
 		
     if d.country
       loc = add_or_create_location(loc_root, d.country)
       if d.state
-        loc = add_or_create_location(loc, gbk_utf8(d.state))
+        loc = add_or_create_location(loc, d.state)
         if d.city
-          loc = add_or_create_location(loc, gbk_utf8(d.city))
+          loc = add_or_create_location(loc, d.city)
         end
       end
     end

@@ -1,12 +1,15 @@
 source:
-  adapter: sqlserver
-  dsn: sqlexpress
-  mode: odbc
-  database: omei
+  adapter: sqlite3
+  database: ../data/omei.sqlite
+  encoding: gbk
+  timeout: 5000
 
 target:
   adapter: sqlite3
-  database: data/dev.sqlite3
+  database: /home/jimmy/work/omei/db/dev.sqlite3
+  encoding: utf8
   timeout: 5000
 
-
+infos:
+  adapter: sqlite3
+  database: /home/jimmy/work/omei/db/infos.sqlite3
