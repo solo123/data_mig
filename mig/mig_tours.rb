@@ -10,25 +10,33 @@ class SrcTourDest < SourceDB
 end
 
 class Tour < InfosDB
-  has_one :description, :as => :ref, :dependent => :destroy
+  has_one :description, :as => :desc_data, :dependent => :destroy
   has_many :spots, :order => 'visit_day, visit_order'
+  has_one :tour_price
+  has_one :tour_setting
 end
 class Spot < InfosDB
   set_table_name 'tour_routes'
-  has_one :description, :as => :ref, :dependent => :destroy
+  has_one :description, :as => :desc_data, :dependent => :destroy
   accepts_nested_attributes_for :description, :allow_destroy => true
   
   belongs_to :tour
 end
+class TourPrice < InfosDB
+  belongs_to :tour
+end
+class TourSetting < InfosDB
+  belongs_to :tour
+end
 class Description < InfosDB
-  belongs_to :ref, :polymorphic => true
+  belongs_to :desc_data, :polymorphic => true
 end
 
 def do_migrate
 	Tour.delete_all
 	Spot.delete_all
-	Description.delete_all("ref_type='Tour'")
-	Description.delete_all("ref_type='Spot'")
+	Description.delete_all("desc_data_type='Tour'")
+	Description.delete_all("desc_data_type='Spot'")
 
   print "mig tours.\n"
 	src = SrcTour.all
@@ -43,17 +51,22 @@ def do_migrate
 		t.id = d.id
 		t.title = d.TourName
 		t.title_cn = d.TourName_cn
-		
 		t.days = d.TourDay
 		t.tour_type = d.TourType
-		t.is_auto_gen = d.autoGenSchedule
-		t.weekly = d.weekly
-		t.price_adult = d.priceAdult
-		t.price_child = d.priceChild
-		t.has_seat_table = d.hasSeatTable
-		t.is_float_price = d.isFloatPrice
-		t.price1 = t.price2 = t.price3 = t.price4 = d.priceAdult
-		t.status = d.status
+    t.status = d.status
+    
+    t.build_tour_setting
+    s = t.tour_setting		
+		s.is_auto_gen = d.autoGenSchedule
+		s.weekly = d.weekly
+    s.has_seat_table = d.hasSeatTable
+    s.is_float_price = d.isFloatPrice
+		
+		t.build_tour_price
+		p = t.tour_price
+		p.price_adult = d.priceAdult
+		p.price_child = d.priceChild
+		p.price1 = p.price2 = p.price3 = p.price4 = d.priceAdult
 		
 		t.build_description
 		t.description.en = d.Description

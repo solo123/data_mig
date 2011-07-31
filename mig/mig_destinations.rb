@@ -5,18 +5,18 @@ class SrcDestinations < SourceDB
 	self.primary_key = "DestinationID"
 end
 class Destination < InfosDB
-	has_one :description, :as => :ref
+	has_one :description, :as => :desc_data
 end
 class Location < InfosDB
   has_many :locs, :class_name => 'Location', :foreign_key => 'parent_id'
   belongs_to :parent, :class_name => 'Location'
 end
 class Description < InfosDB
-	belongs_to :ref, :polymorphic => :true
+	belongs_to :desc_data, :polymorphic => :true
 end
 def do_migrate
 	Destination.delete_all
-	Description.delete_all("ref_type='Destination'")
+	Description.delete_all("desc_data_type='Destination'")
 
   loc_root = Location.where(:parent_id => nil, :title => 'locations').first
   if !loc_root
