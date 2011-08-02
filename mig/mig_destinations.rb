@@ -6,25 +6,18 @@ class SrcDestinations < SourceDB
 end
 class Destination < InfosDB
 	has_one :description, :as => :desc_data
+	belongs_to :city
 end
-class Location < InfosDB
-  has_many :locs, :class_name => 'Location', :foreign_key => 'parent_id'
-  belongs_to :parent, :class_name => 'Location'
+class City < InfosDB
 end
 class Description < InfosDB
 	belongs_to :desc_data, :polymorphic => :true
 end
 def do_migrate
+  City.delete_all
 	Destination.delete_all
 	Description.delete_all("desc_data_type='Destination'")
 
-  loc_root = Location.where(:parent_id => nil, :title => 'locations').first
-  if !loc_root
-    loc_root = Location.new
-    loc_root.title = 'locations'
-    loc_root.save!
-  end
-    
 	src = SrcDestinations.all
 	tot = src.length
 	cnt = 0
@@ -43,16 +36,7 @@ def do_migrate
 		dest.description.en = d.Description
 		dest.description.cn = d.Description_cn
 		
-    if d.country
-      loc = add_or_create_location(loc_root, d.country)
-      if d.state
-        loc = add_or_create_location(loc, d.state)
-        if d.city
-          loc = add_or_create_location(loc, d.city)
-        end
-      end
-    end
-		dest.location_id = loc.id if loc
+		dest.city = find_or_create_city(d.city, d.state, d.country)
 		
 		dest.save!
 
@@ -61,15 +45,17 @@ def do_migrate
 		STDOUT.flush
 	end
 end
-def add_or_create_location(parent, title)
-  loc = parent.locs.where(:title => title).first
-  if !loc
-    loc = Location.new
-    loc.title = loc.title_cn = title
-    parent.locs << loc
-    loc.save!
+def find_or_create_city(city, state, country)
+  c = City.where(:city => city, :state => state, :country => country).first
+  if !c
+    c = City.new
+    c.city = city
+    c.state = state
+    c.country = country
+    c.status = 1
+    c.save!
   end
-  loc
+  c
 end
 
 do_migrate
