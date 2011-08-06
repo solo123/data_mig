@@ -1,14 +1,10 @@
 source:
   adapter: sqlite3
   database: ../data/omei.sqlite
-  encoding: gbk
-  timeout: 5000
 
 target:
   adapter: sqlite3
   database: /home/jimmy/work/omei/db/dev.sqlite3
-  encoding: utf8
-  timeout: 5000
 
 infos:
   adapter: sqlite3
