@@ -9,3 +9,8 @@ target:
 infos:
   adapter: sqlite3
   database: /home/jimmy/work/omei/db/infos.sqlite3
+
+operates:
+  adapter: sqlite3
+  database: /home/jimmy/work/omei/db/operates.sqlite3
+  

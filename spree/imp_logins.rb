@@ -1,10 +1,10 @@
 def import_userlogin
-  tot = UserInfo.count
+  tot = Infos::UserInfo.count
   cnt = 0
   
   role_admin = Role.find_by_name('admin')
   
-  UserInfo.all.each do |ui|
+  Infos::UserInfo.all.each do |ui|
     em = ui.emails.first
     if em && em.email_address
       u = User.find_by_email(em.email_address)
@@ -17,12 +17,13 @@ def import_userlogin
           u.save!
           puts 'add login: ' << em.email_address
         end
-        
       end
       if ui.user_level == 9 && role_admin && !(u.has_role? :admin)
         u.roles << role_admin
         puts " > admin(#{u.login}) > "
-      end 
+      end
+      ui.user_id = u.id
+      ui.save
     end
 
     cnt += 1
