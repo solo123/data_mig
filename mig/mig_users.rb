@@ -45,8 +45,7 @@ def do_migrate
 		
 		u = Infos::UserInfo.new
 		u.id = d.id
-		u.first_name = d.firstName
-		u.last_name = d.lastName
+    u.full_name = [d.firstName, d.lastName].join(' ')
 		u.user_type = 0
 		u.user_level = 0
 		u.login = lg.loginName

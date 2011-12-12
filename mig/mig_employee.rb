@@ -16,7 +16,7 @@ end
 def do_migrate
   Infos::Employee.delete_all
   #Infos::UserInfo.delete_all
-  #Infos::Email.delete_all("email_date=''")
+  #Infos::Email.delete_all
   #Infos::Telephone.delete_all
   #Infos::Address.delete_all
   
@@ -35,7 +35,7 @@ def do_migrate
 		  emp = Infos::Employee.new
 		  emp.id = src_emp.id
 		  emp.company_id = src_emp.companyId
-		  emp.userinfo_id = src_emp.userId
+		  emp.user_info_id = src_emp.userId
 		  emp.nickname = src_emp.nickname
 		  emp.employ_date = src_emp.employDate
 		  emp.ssn = src_emp.ssn

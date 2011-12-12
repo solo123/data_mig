@@ -2,7 +2,7 @@ def import_userlogin
   tot = Infos::UserInfo.count
   cnt = 0
   
-  role_admin = Role.find_by_name('admin')
+  admin_role = Role.find_or_create_by_name "admin"
   
   Infos::UserInfo.all.each do |ui|
     em = ui.emails.first
@@ -16,11 +16,13 @@ def import_userlogin
         if u.valid?
           u.save!
           puts 'add login: ' << em.email_address
+        else
+          puts '  >>ERROR>> invalid user: ' + u.login
         end
       end
-      if ui.user_level == 9 && role_admin && !(u.has_role? :admin)
-        u.roles << role_admin
-        puts " > admin(#{u.login}) > "
+      if !(u.has_role?(:admin)) && ui.employee && ui.employee.status > 0
+        u.roles << admin_role
+        puts " add admin(#{u.login}) > "
       end
       ui.user_id = u.id
       ui.save
