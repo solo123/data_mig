@@ -1,25 +1,24 @@
 require '../public/db_connect'
 
 class SrcDestinations < SourceDB
-	set_table_name "Destination"
+	self.table_name = "Destination"
 	self.primary_key = "DestinationID"
 end
-module Infos
-  class Destination < InfosDB
-  	has_one :description, :as => :desc_data
-  	belongs_to :city
-  end
-  class City < InfosDB
-  end
-  class Description < InfosDB
-  	belongs_to :desc_data, :polymorphic => :true
-  end
+
+class Destination < TargetDB
+	has_one :description, :as => :desc_data
+	belongs_to :city
+end
+class City < TargetDB
+end
+class Description < TargetDB
+	belongs_to :desc_data, :polymorphic => :true
 end
 
 def do_migrate
-  Infos::City.delete_all
-	Infos::Destination.delete_all
-	Infos::Description.delete_all("desc_data_type='Destination'")
+  City.delete_all
+	Destination.delete_all
+	Description.delete_all("desc_data_type='Destination'")
 
 	src = SrcDestinations.all
 	tot = src.length
@@ -28,7 +27,7 @@ def do_migrate
 		if $interruped
 			exit
 		end
-		dest = Infos::Destination.new
+		dest = Destination.new
 		dest.build_description
 		
 		dest.id = d.id
@@ -49,9 +48,9 @@ def do_migrate
 	end
 end
 def find_or_create_city(city, state, country)
-  c = Infos::City.where(:city => city, :state => state, :country => country).first
+  c = City.where(:city => city, :state => state, :country => country).first
   if !c
-    c = Infos::City.new
+    c = City.new
     c.city = city
     c.state = state
     c.country = country
@@ -62,3 +61,4 @@ def find_or_create_city(city, state, country)
 end
 
 do_migrate
+puts "*** DONE ****"

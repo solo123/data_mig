@@ -1,44 +1,43 @@
 require '../public/db_connect'
 
 class SrcTour < SourceDB
-	set_table_name "tours"
+	self.table_name = "tours"
 	self.primary_key = "TourID"
 end
 class SrcTourDest < SourceDB
-  set_table_name "tourDestinations"
+  self.table_name = "tourDestinations"
   self.primary_key = "tourDestid"
 end
 
-module Infos
-  class Tour < InfosDB
+  class Tour < TargetDB
     has_one :description, :as => :desc_data, :dependent => :destroy
     has_many :spots, :order => 'visit_day, visit_order'
     has_one :tour_price
     has_one :tour_setting
   end
-  class Spot < InfosDB
-    set_table_name 'tour_routes'
+  class Spot < TargetDB
+    self.table_name = 'tour_routes'
     has_one :description, :as => :desc_data, :dependent => :destroy
     accepts_nested_attributes_for :description, :allow_destroy => true
     
     belongs_to :tour
   end
-  class TourPrice < InfosDB
+  class TourPrice < TargetDB
     belongs_to :tour
   end
-  class TourSetting < InfosDB
+  class TourSetting < TargetDB
     belongs_to :tour
   end
-  class Description < InfosDB
+  class Description < TargetDB
     belongs_to :desc_data, :polymorphic => true
   end
-end
+
 
 def do_migrate
-	Infos::Tour.delete_all
-	Infos::Spot.delete_all
-	Infos::Description.delete_all("desc_data_type='Infos::Tour'")
-	Infos::Description.delete_all("desc_data_type='Infos::Spot'")
+	Tour.delete_all
+	Spot.delete_all
+	Description.delete_all("desc_data_type='Tour'")
+	Description.delete_all("desc_data_type='Spot'")
 
   print "mig tours.\n"
 	src = SrcTour.all
@@ -49,7 +48,7 @@ def do_migrate
 			exit
 		end
 		
-		t = Infos::Tour.new
+		t = Tour.new
 		t.id = d.id
 		t.title = d.TourName
 		t.title_cn = d.TourName_cn
@@ -89,7 +88,7 @@ def do_migrate
       exit
     end
     
-    s = Infos::Spot.new
+    s = Spot.new
     s.id = d.id
     s.tour_id = d.tourId
     s.destination_id = d.destinationId
