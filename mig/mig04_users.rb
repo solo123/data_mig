@@ -9,7 +9,7 @@ class SrcUserLogin < SourceDB
   self.primary_key = "userId"
 end
 
-class UserInfo < TargetDB
+class Member < TargetDB
   has_many :telephones, :as => :tel_number
   has_many :emails, :as => :email_data
   has_many :addresses, :as => :address_data
@@ -28,7 +28,7 @@ class City < TargetDB
 end
 
 def do_migrate
-  UserInfo.delete_all
+  Member.delete_all
   Email.delete_all("email_data_type='UserInfo'")
   Telephone.delete_all("tel_number_type='UserInfo'")
   Address.delete_all("address_data_type='UserInfo'")
@@ -42,7 +42,7 @@ def do_migrate
 		end
 		lg = SrcUserLogin.find_by_id(d.id)
 		
-		u = UserInfo.new
+		u = Member.new
 		u.id = d.id
     u.full_name = [d.firstName, d.lastName].join(' ')
 		u.user_type = 0
