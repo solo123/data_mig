@@ -10,7 +10,7 @@ class SrcUserInfo < SourceDB
 end
 
 class Employee < TargetDB
-  has_many :telphones, :as => :tel_number
+  has_many :telephones, :as => :tel_number
   has_many :emails, :as => :email_data
   has_many :addresses, :as => :address_data
 end
@@ -45,6 +45,7 @@ def do_migrate
 
 	  emp = Employee.new
 	  emp.id = src_emp.id
+	  emp.login_name = 'ID_' + src_emp.id.to_s + '_' + rand(10000).to_s
 	  emp.agent_id = src_emp.companyId
 	  emp.user_info_id = src_emp.userId
 	  emp.nickname = src_emp.nickname
@@ -57,7 +58,7 @@ def do_migrate
 	  if src_emp.userId
 			src_user = SrcUserInfo.find_by_userId(src_emp.userId) 
 			if src_user
-				emp.login_name = src_emp.loginName
+				emp.login_name = src_emp.loginName if src_emp.loginName
 			  emp.pin = src_user.pin
 				if src_user.email && src_user.email.length > 3
 					em = Email.new
@@ -77,10 +78,10 @@ def do_migrate
 					t.tel_type = 'home'
 					emp.telephones << t
 				end
-				if src_user.walkyPhone && src_user.waklyPhone.length > 3
+				if src_user.walkyPhone && src_user.walkyPhone.length > 3
 					t = Telephone.new
-					t.tel = src_user.waklyPhone
-					t.tel_type = 'wakly'
+					t.tel = src_user.walkyPhone
+					t.tel_type = 'walky'
 					emp.telephones << t
 				end
 				if src_user.cellPhone && src_user.cellPhone.length > 3

@@ -40,7 +40,7 @@ def do_migrate
 		if $interruped
 			exit
 		end
-		lg = SrcUserLogin.find_by_id(d.id)
+		lg = SrcUserLogin.find_by_userId(d.id)
 		
 		u = Member.new
 		u.id = d.id

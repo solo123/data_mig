@@ -32,6 +32,7 @@ class Address < TargetDB
 end
 class City < TargetDB
 end
+class Remark < TargetDB; end
 
 def do_migrate
   Agent.delete_all
@@ -55,7 +56,6 @@ def do_migrate
 	  agent.company_name = d.companyName
 	  agent.icon_url = d.iconUrl
 	  agent.website = d.website
-	  agent.remark = [d.description, d.description_cn].join(" ")
 	  agent.status = d.status
 	  ac = agent.build_agent_account
 	  ac.discount = d.discount
@@ -84,6 +84,12 @@ def do_migrate
 	  c.addresses << addr
 
 		agent.save!
+
+		rmk = Remark.new
+		rmk.notes_type = 'Agent'
+		rmk.notes_id = agent.id
+		rmk.notes_text = [d.description, d.description_cn].join(" ")
+		rmk.save!
 
 		cnt += 1
 		print "\r" << percent(cnt,tot) << d.id.to_s # << " : " << dest.title_cn 
