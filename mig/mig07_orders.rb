@@ -41,8 +41,8 @@ class Address < TargetDB
   belongs_to :city
   belongs_to :address_data, :polymorphic => :true
 end
-class City < TargetDB
-end
+class City < TargetDB; end
+class Remark < TargetDB; end
 
 def do_migrate
 	Order.delete_all
@@ -62,11 +62,9 @@ def do_migrate
     t.order_number = gen_order_number(d.orderDate, d.id)
     t.order_source_type = 'Schedule'
     t.order_source_id = d.scheduleId
-    t.special_instructions = d.remark
     t.order_method = d.orderType
     t.created_at = d.orderDate
-
-    t.state = status_text[d.status] if d.status
+    t.status = d.status
     #t.completed_at = nil
 
     pr = t.build_order_price
@@ -95,6 +93,13 @@ def do_migrate
     itm.amount = d.fare
     t.order_items << itm
     t.save
+    if d.remark
+      rmk = Remark.new
+      rmk.notes_type = 'Order'
+      rmk.notes_id = t.id
+      rmk.status = 1
+      rmk.save
+    end
 
 		cnt += 1
 		print "\r" << percent(cnt,tot) << d.id.to_s # << " : " << dest.title_cn 
