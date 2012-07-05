@@ -31,6 +31,7 @@ end
   class Description < TargetDB
     belongs_to :desc_data, :polymorphic => true
   end
+	class TourType < TargetDB; end
 
 
 def do_migrate
@@ -38,6 +39,11 @@ def do_migrate
 	Spot.delete_all
 	Description.delete_all("desc_data_type='Tour'")
 	Description.delete_all("desc_data_type='Spot'")
+
+	TourType.delete_all
+	tt = TourType.new(:id => 1, :type_name => 'Bus Tour', :status => 1); tt.save
+	tt = TourType.new(:id => 2, :type_name => 'Package', :status => 1); tt.save
+	tt = TourType.new(:id => 3, :type_name => 'Cruise', :status => 1); tt.save
 
   print "mig tours.\n"
 	src = SrcTour.all
