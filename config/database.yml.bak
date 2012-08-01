@@ -1,0 +1,11 @@
+source:
+  adapter: sqlite3
+  database: ../data/omei.sqlite
+
+target:
+  adapter: sqlite3
+<<<<<<< HEAD
+  database: /work/omei/db/omei.sqlite3
+=======
+  database: /home/jimmy/omei/db/omei.sqlite3
+>>>>>>> db9148fd987cbf1e303d0314124b8f9f20e7a287

@@ -1,0 +1,7 @@
+source:
+  adapter: sqlite3
+  database: ../data/omei.sqlite
+
+target:
+  adapter: sqlite3
+  database: /home/jimmy/omei/db/omei.sqlite3

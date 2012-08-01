@@ -1,0 +1,10 @@
+source:
+  adapter: sqlite3
+  database: ../data/omei.sqlite
+
+target:
+  adapter: mysql2
+  database: omei
+  username: root
+  password: liang
+  encode: utf8

@@ -1,22 +1,33 @@
 require '../public/db_connect'
 
-class TourType < TargetDB; end
 class InputType < TargetDB; end
 
 def do_migrate
-	TourType.delete_all
-	t = TourType.new(:type_name => 'Bus tour', :status => 1)
-	t.save
-	t = TourType.new(:type_name => 'Package', :status => 1)
-	t.save
-	t = TourType.new(:type_name => 'Cruise', :status => 1)
-	t.save
-
 	InputType.delete_all
-	t = InputType.new(:type_name => 'bus-type', :type_text => 'Bus'); t.save
-	t = InputType.new(:type_name => 'bus-type', :type_text => 'Mini Bus'); t.save
-	t = InputType.new(:type_name => 'bus-type', :type_text => 'Van'); t.save
-	
+
+	add_type('tour', 'Bus Tour', '1')
+	add_type('tour', 'Package', '2')
+	add_type('tour', 'Cruise', '3')
+
+	add_type('bus', 'Bus', 'BUS')
+	add_type('bus', 'Mini Bus', 'MBUS')
+	add_type('bus', 'Van', 'VAN')
+
+	add_type('roles', 'sales', '1')
+	add_type('roles', 'driver', '2')
+	add_type('roles', 'tour guide', '3')
+	add_type('roles', 'manager', '4')
+	add_type('roles', 'account', '5')
+	add_type('roles', 'admin', 'X')
+
+end
+def add_type(type_name, type_text, type_value)
+	t = InputType.new()
+	t.type_name = type_name
+	t.type_text = type_text
+	t.type_value = type_value
+	t.status = 1
+	t.save
 end
 
 do_migrate
