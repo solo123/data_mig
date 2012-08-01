@@ -3,8 +3,5 @@ source:
   database: ../data/omei.sqlite
 
 target:
-  adapter: mysql2
-  database: omei
-  username: root
-  password: liang
-  encode: utf8
+  adapter: sqlite3
+  database: /work/omei/db/omei.sqlite3

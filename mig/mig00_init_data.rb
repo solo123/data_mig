@@ -1,6 +1,7 @@
 require '../public/db_connect'
 
 class TourType < TargetDB; end
+class InputType < TargetDB; end
 
 def do_migrate
 	TourType.delete_all
@@ -11,6 +12,10 @@ def do_migrate
 	t = TourType.new(:type_name => 'Cruise', :status => 1)
 	t.save
 
+	InputType.delete_all
+	t = InputType.new(:type_name => 'bus-type', :type_text => 'Bus'); t.save
+	t = InputType.new(:type_name => 'bus-type', :type_text => 'Mini Bus'); t.save
+	t = InputType.new(:type_name => 'bus-type', :type_text => 'Van'); t.save
 	
 end
 
