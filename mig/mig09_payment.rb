@@ -1,5 +1,5 @@
 require '../public/db_connect'
-require 'lib_address'
+require './lib_address'
 
 class SrcPayment < SourceDB
 	self.table_name = "payment"
@@ -28,7 +28,7 @@ class PayCash < TargetDB; end
 class PayCreditCard < TargetDB; end
 class PayVoucher < TargetDB; end
 class PayCheck < TargetDB; end
-class PayAr < TargetDB; end
+class PayAgent < TargetDB; end
 class Remark < TargetDB; end
 
 def do_migrate

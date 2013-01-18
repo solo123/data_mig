@@ -31,10 +31,10 @@ def do_migrate
 		dest.build_description
 		
 		dest.id = d.id
-		dest.title = d.DestinationName
-		dest.title_cn = d.DestinationName_cn
 		dest.status = d.Status
 
+		dest.description.title = d.DestinationName
+		dest.description.title_cn = d.DestinationName_cn
 		dest.description.en = d.Description
 		dest.description.cn = d.Description_cn
 		

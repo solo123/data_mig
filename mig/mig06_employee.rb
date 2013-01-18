@@ -10,6 +10,8 @@ class SrcUserInfo < SourceDB
 end
 
 class Employee < TargetDB
+end
+class EmployeeInfo < TargetDB
   has_many :telephones, :as => :tel_number
   has_many :emails, :as => :email_data
   has_many :addresses, :as => :address_data
@@ -30,6 +32,7 @@ end
 
 def do_migrate
   Employee.delete_all
+	EmployeeInfo.delete_all
   Email.delete_all(:email_data_type => 'Employee')
   Telephone.delete_all(:tel_number_type => 'Employee')
   Address.delete_all(:address_data_type => 'Employee')
@@ -43,26 +46,31 @@ def do_migrate
 			exit
 		end
 
-	  emp = Employee.new
-	  emp.id = src_emp.id
-	  emp.login_name = 'ID_' + src_emp.id.to_s + '_' + rand(10000).to_s
-	  emp.agent_id = src_emp.companyId
-	  emp.user_info_id = src_emp.userId
+		e = Employee.new
+	  emp = EmployeeInfo.new
+	  e.id = 	emp.id = 	src_emp.employeeID
+		emp.employee_id = src_emp.employeeID if src_emp.status && src_emp.status == 1
+		if !src_emp.loginName || src_emp.loginName.empty? || Employee.exists?(:login_name => src_emp.loginName)
+						e.login_name = e.id.to_s
+		else
+				  e.login_name = src_emp.loginName
+		end
+		emp.pin = src_emp.password
+	  emp.company_id = src_emp.companyId
 	  emp.nickname = src_emp.nickname
 	  emp.employ_date = src_emp.employDate
 	  emp.ssn = src_emp.ssn
 	  emp.birthday = src_emp.birthday
+		emp.status = src_emp.status
 	  if !src_emp.status || src_emp.status == 0
-	  	emp.locked_at = DateTime.now
+	  	e.locked_at = DateTime.now
 	  end
-	  if src_emp.userId
+	  if src_emp.status == 1 && src_emp.userId
 			src_user = SrcUserInfo.find_by_userId(src_emp.userId) 
 			if src_user
-				emp.login_name = src_emp.loginName if src_emp.loginName
-			  emp.pin = src_user.pin
 				if src_user.email && src_user.email.length > 3
 					em = Email.new
-					emp.email = em.email_address = src_user.email
+					em.email_address = src_user.email
 					emp.emails << em
 				end
 				if src_user.address
@@ -93,6 +101,9 @@ def do_migrate
 	    end
 	  end
 	  emp.save
+		if src_user && src_user.status == 1
+						e.save
+		end
 		cnt += 1
 		print "\r" << percent(cnt,tot) << emp.id.to_s 
 		STDOUT.flush

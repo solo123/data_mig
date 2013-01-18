@@ -21,7 +21,7 @@ def do_migrate
 		
 		u = AgentInvoice.new
 		u.id = d.id
-		u.agent_id = d.agentId
+		u.company_id = d.agentID
 		u.amount = d.amount
 		u.commission = d.commission
 		u.net_total = d.netTotal

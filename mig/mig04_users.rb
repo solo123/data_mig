@@ -5,33 +5,39 @@ class SrcUserInfo < SourceDB
 	self.primary_key = "userId"
 end
 class SrcUserLogin < SourceDB
-  self.table_name = "userlogin"
-  self.primary_key = "userId"
+	self.table_name = "userlogin"
+	self.primary_key = "userId"
 end
 
-class Member < TargetDB
-  has_many :telephones, :as => :tel_number
-  has_many :emails, :as => :email_data
-  has_many :addresses, :as => :address_data
+class UserInfo < TargetDB
+  belongs_to :user
+	has_many :telephones, :as => :tel_number
+	has_many :emails, :as => :email_data
+	has_many :addresses, :as => :address_data
+end
+class User < TargetDB
+	has_one :user_info
 end
 class Email < TargetDB
-  belongs_to :email_data, :polymorphic => :true
+	belongs_to :email_data, :polymorphic => :true
 end
+
 class Telephone < TargetDB
-  belongs_to :tel_number, :polymorphic => :true
+	belongs_to :tel_number, :polymorphic => :true
 end
 class Address < TargetDB
-  belongs_to :city
-  belongs_to :address_data, :polymorphic => :true
+	belongs_to :city
+	belongs_to :address_data, :polymorphic => :true
 end
 class City < TargetDB
 end
 
 def do_migrate
-  Member.delete_all
-  Email.delete_all("email_data_type='UserInfo'")
-  Telephone.delete_all("tel_number_type='UserInfo'")
-  Address.delete_all("address_data_type='UserInfo'")
+	User.delete_all
+	UserInfo.delete_all
+	Email.delete_all
+	Telephone.delete_all
+	Address.delete_all
 
 	src = SrcUserInfo.where(:status => 1)
 	tot = src.length
@@ -41,45 +47,47 @@ def do_migrate
 			exit
 		end
 		lg = SrcUserLogin.find_by_userId(d.id)
-		
-		u = Member.new
+
+		u = UserInfo.new
 		u.id = d.id
-    u.full_name = [d.firstName, d.lastName].join(' ')
+		u.full_name = [d.firstName, d.lastName].join(' ')
 		u.user_type = 0
 		u.user_level = 0
-		u.login_name = lg.loginName
-		u.pin = lg.password if lg
+    if lg
+  		u.login_name = lg.loginName
+	  	u.pin = lg.password
+    end
 		u.status = d.status
 
 		if d.homePhone && d.homePhone.length > 1
-		  tel = Telephone.new
-		  tel.tel_type = 'home'
-		  tel.tel = d.homePhone
-		  u.telephones << tel
+			tel = Telephone.new
+			tel.tel_type = 'home'
+			tel.tel = d.homePhone
+			u.telephones << tel
 		end
 		if d.cellPhone && d.cellPhone.length > 1
-		  tel = Telephone.new
-		  tel.tel_type = 'mobile'
-		  tel.tel = d.cellPhone
-		  u.telephones << tel
+			tel = Telephone.new
+			tel.tel_type = 'mobile'
+			tel.tel = d.cellPhone
+			u.telephones << tel
 		end
 		if d.walkyPhone && d.walkyPhone.length > 1
-		  tel = Telephone.new
-		  tel.tel_type = 'walky'
-		  tel.tel = d.walkyPhone
-		  u.telephones << tel
+			tel = Telephone.new
+			tel.tel_type = 'walky'
+			tel.tel = d.walkyPhone
+			u.telephones << tel
 		end
 		if d.email && d.email.length > 1
-		  em = Email.new
-		  em.email_address = d.email
-		  u.emails << em
+			em = Email.new
+			em.email_address = d.email
+			u.emails << em
 		end
 		if d.address && d.address.length > 1
-		  adr = Address.new
-		  adr.address1 = d.address
-		  adr.city = find_or_create_city(d.city, d.state, d.country)
-		  adr.zipcode = d.zip
-		  u.addresses << adr
+			adr = Address.new
+			adr.address1 = d.address
+			adr.city = find_or_create_city(d.city, d.state, d.country)
+			adr.zipcode = d.zip
+			u.addresses << adr
 		end
 		u.save!
 
@@ -90,16 +98,16 @@ def do_migrate
 	end
 end
 def find_or_create_city(city, state, country)
-  c = City.where(:city => city, :state => state, :country => country).first
-  if !c
-    c = City.new
-    c.city = city
-    c.state = state
-    c.country = country
-    c.status = 1
-    c.save!
-  end
-  c
+	c = City.where(:city => city, :state => state, :country => country).first
+	if !c
+		c = City.new
+		c.city = city
+		c.state = state
+		c.country = country
+		c.status = 1
+		c.save!
+	end
+	c
 end
 
 do_migrate

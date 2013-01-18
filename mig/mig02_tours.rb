@@ -31,7 +31,7 @@ end
   class Description < TargetDB
     belongs_to :desc_data, :polymorphic => true
   end
-	class TourType < TargetDB; end
+  class InputType < TargetDB; end
 
 
 def do_migrate
@@ -40,10 +40,10 @@ def do_migrate
 	Description.delete_all("desc_data_type='Tour'")
 	Description.delete_all("desc_data_type='Spot'")
 
-	TourType.delete_all
-	tt = TourType.new(:id => 1, :type_name => 'Bus Tour', :status => 1); tt.save
-	tt = TourType.new(:id => 2, :type_name => 'Package', :status => 1); tt.save
-	tt = TourType.new(:id => 3, :type_name => 'Cruise', :status => 1); tt.save
+	InputType.delete_all(:type_name => 'TourType')
+	tt = InputType.new(:id => 1, :type_name => 'TourType', :type_text => 'Bus Tour', :type_value => 1,  :status => 1); tt.save
+	tt = InputType.new(:id => 2, :type_name => 'TourType', :type_text => 'Package', :type_value => 2,  :status => 1); tt.save
+	tt = InputType.new(:id => 3, :type_name => 'TourType', :type_text => 'Cruise', :type_value => 3, :status => 1); tt.save
 
   print "mig tours.\n"
 	src = SrcTour.all
@@ -56,8 +56,6 @@ def do_migrate
 		
 		t = Tour.new
 		t.id = d.id
-		t.title = d.TourName
-		t.title_cn = d.TourName_cn
 		t.days = d.TourDay
 		t.tour_type = d.TourType
     t.status = d.status
@@ -76,6 +74,8 @@ def do_migrate
 		p.price1 = p.price2 = p.price3 = p.price4 = d.priceAdult
 		
 		t.build_description
+		t.description.title = d.TourName
+		t.description.title_cn = d.TourName_cn
 		t.description.en = d.Description
 		t.description.cn = d.Description_cn
 		t.save!

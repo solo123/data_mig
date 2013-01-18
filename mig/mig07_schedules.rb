@@ -17,7 +17,7 @@ class BusSeat < TargetDB; end
 def do_migrate
   Schedule.delete_all
 
-	src = SrcSchedule.where('startDate > "2011-10-01"')
+	src = SrcSchedule.where('startDate > "2011-12-31"')
 	tot = src.length
 	cnt = 0
 	src.each do |d|
@@ -43,6 +43,9 @@ def do_migrate
     pr.price_adult = d.priceAdult
     pr.price_child = d.priceChild
     pr.price1 = d.priceAdult
+		pr.price2 = d.priceAdult + d.priceChild
+		pr.price3 = d.priceAdult + 2 * d.priceChild
+		pr.price4 = d.priceAdult + 3 * d.priceChild
     pr.created_at = pr.updated_at = d.startDate
     pr.save!
 

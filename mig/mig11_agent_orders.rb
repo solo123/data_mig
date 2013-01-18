@@ -22,7 +22,7 @@ def do_migrate
 		u = PayAgent.new
 		u.id = d.id
 		u.order_id = d.orderID
-		u.agent_id = d.agentID
+		u.company_id = d.agentID
 		u.invoice_id = d.invoiceID
 		u.amount = d.fare
 		u.agent_discount = d.fare - d.agentReceivable

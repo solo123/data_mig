@@ -9,16 +9,16 @@ class SrcUserLogin < SourceDB
   self.primary_key = "userId"
 end
 
-class Agent < TargetDB
+class Company < TargetDB
 	has_many :contacts
-	has_one :agent_account
+	has_one :company_account
 end
 class Contact < TargetDB
   has_many :telephones, :as => :tel_number
   has_many :emails, :as => :email_data
   has_many :addresses, :as => :address_data
 end
-class AgentAccount < TargetDB
+class CompanyAccount < TargetDB
 end
 class Email < TargetDB
   belongs_to :email_data, :polymorphic => :true
@@ -35,9 +35,9 @@ end
 class Remark < TargetDB; end
 
 def do_migrate
-  Agent.delete_all
+  Company.delete_all
   Contact.delete_all
-  AgentAccount.delete_all
+  CompanyAccount.delete_all
 
   Email.delete_all(:email_data_type => 'Contact')
   Telephone.delete_all(:tel_number_type => 'Contact')
@@ -50,21 +50,21 @@ def do_migrate
 		if $interruped
 			exit
 		end
-	  agent = Agent.new
-	  agent.id = d.id
-	  agent.short_name = d.shortName
-	  agent.company_name = d.companyName
-	  agent.icon_url = d.iconUrl
-	  agent.website = d.website
-	  agent.status = d.status
-	  ac = agent.build_agent_account
+	  co = Company.new
+	  co.id = d.id
+	  co.short_name = d.shortName
+	  co.company_name = d.companyName
+	  co.icon_url = d.iconUrl
+	  co.website = d.website
+	  co.status = d.status
+	  ac = co.build_company_account
 	  ac.discount = d.discount
 	  ac.max_credit = d.maxCredit
 	  ac.balance = d.creditBalance
 	  
 	  c = Contact.new
 	  c.contact_name = d.contactPerson
-	  agent.contacts << c
+	  co.contacts << c
 	  if d.telephone
 	  	t = Telephone.new
 	  	t.tel_type = 'tel'
@@ -83,11 +83,11 @@ def do_migrate
 	  addr.city = find_or_create_city(d.city, d.state, d.country)
 	  c.addresses << addr
 
-		agent.save!
+		co.save!
 
 		rmk = Remark.new
-		rmk.notes_type = 'Agent'
-		rmk.notes_id = agent.id
+		rmk.notes_type = 'Company'
+		rmk.notes_id = co.id
 		rmk.notes_text = [d.description, d.description_cn].join(" ")
 		rmk.save!
 

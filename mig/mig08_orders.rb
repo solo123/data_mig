@@ -4,6 +4,8 @@ class SrcOrder < SourceDB
 	self.table_name = "orders"
 	self.primary_key = "orderId"
 end
+class ScheduleAssignment < TargetDB
+end
 class Order < TargetDB
   has_one :order_customer
   has_one :order_operate
@@ -60,11 +62,12 @@ def do_migrate
 		t = Order.new
 		t.id = d.id
     t.order_number = gen_order_number(d.orderDate, d.id)
-    t.order_source_type = 'Schedule'
-    t.order_source_id = d.scheduleId
+    t.schedule_id = d.scheduleId
     t.order_method = d.orderType
     t.created_at = d.orderDate
     t.status = d.status
+		assn = ScheduleAssignment.where(:schedule_id => d.scheduleId).first
+		t.schedule_assignment_id = assn.id if assn
     #t.completed_at = nil
 
     pr = t.build_order_price
